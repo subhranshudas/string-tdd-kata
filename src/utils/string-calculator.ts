@@ -1,27 +1,38 @@
 export function add(numbers: string): number {
-  if (numbers === "") {
+  if (isEmpty(numbers)) {
     return 0;
   }
 
-  const customDelimiterPattern = /^\/\/(.)\n/;
+  const delimiter = getDelimiter(numbers);
+  const numbersArray = parseNumbers(numbers, delimiter);
+  return sumNumbers(numbersArray);
+}
 
-  const isCustomDelimiterPatternPresent = customDelimiterPattern.test(numbers);
-  let numbersArray: number[] = [];
+// constants
+const customDelimiterPattern = /^\/\/(.)\n/;
 
-  if (isCustomDelimiterPatternPresent) {
-    const delimiter = numbers.match(customDelimiterPattern)?.[1];
+// helpers
+function isEmpty(numbers: string): boolean {
+  return numbers === "";
+}
 
-    // remove the custom delimiter pattern
-    const strippedNumbers = numbers.replace(customDelimiterPattern, "");
-
-    // split numbers by delimiter
-    numbersArray = strippedNumbers.split(delimiter!).map(Number);
-    return numbersArray.reduce((acc, curr) => acc + curr, 0);
-  } else {
-    // convert to "\n" to ","
-    const convertedNumbers = numbers.replace(/\n/g, ",");
-    // split to numbers
-    numbersArray = convertedNumbers.split(",").map(Number);
-    return numbersArray.reduce((acc, curr) => acc + curr, 0);
+function getDelimiter(numbers: string): string {
+  if (customDelimiterPattern.test(numbers)) {
+    return numbers.match(customDelimiterPattern)![1];
   }
+  return ",";
+}
+
+function parseNumbers(numbers: string, delimiter: string): number[] {
+  const strippedNumbers = numbers.replace(customDelimiterPattern, "");
+  const convertedNumbers = strippedNumbers.replace(/\n/g, delimiter);
+  return splitNumbers(convertedNumbers, delimiter);
+}
+
+function splitNumbers(numbers: string, delimiter: string): number[] {
+  return numbers.split(delimiter).map(Number);
+}
+
+function sumNumbers(numbers: number[]): number {
+  return numbers.reduce((acc, curr) => acc + curr, 0);
 }
