@@ -1,3 +1,6 @@
+const CUSTOM_DELIMITER_PATTERN = /^\/\/(.)\n/;
+const DEFAULT_DELIMITER = ",";
+
 export function add(numbers: string): number {
   if (isEmpty(numbers)) {
     return 0;
@@ -7,14 +10,12 @@ export function add(numbers: string): number {
   const numbersArray = parseNumbers(numbers, delimiter);
 
   const negatives = numbersArray.filter((n) => n < 0);
+
   if (negatives.length > 0) {
     throw new Error(`negative numbers not allowed: ${negatives.join(", ")}`);
   }
   return sumNumbers(numbersArray);
 }
-
-// constants
-const customDelimiterPattern = /^\/\/(.)\n/;
 
 // helpers
 function isEmpty(numbers: string): boolean {
@@ -22,14 +23,17 @@ function isEmpty(numbers: string): boolean {
 }
 
 function getDelimiter(numbers: string): string {
-  if (customDelimiterPattern.test(numbers)) {
-    return numbers.match(customDelimiterPattern)![1];
+  if (CUSTOM_DELIMITER_PATTERN.test(numbers)) {
+    return numbers.match(CUSTOM_DELIMITER_PATTERN)![1];
   }
-  return ",";
+  return DEFAULT_DELIMITER;
 }
 
-function parseNumbers(numbers: string, delimiter: string): number[] {
-  const strippedNumbers = numbers.replace(customDelimiterPattern, "");
+function parseNumbers(
+  numbers: string,
+  delimiter: string = DEFAULT_DELIMITER
+): number[] {
+  const strippedNumbers = numbers.replace(CUSTOM_DELIMITER_PATTERN, "");
   const convertedNumbers = strippedNumbers.replace(/\n/g, delimiter);
   return splitNumbers(convertedNumbers, delimiter);
 }
