@@ -5,6 +5,11 @@ export function add(numbers: string): number {
 
   const delimiter = getDelimiter(numbers);
   const numbersArray = parseNumbers(numbers, delimiter);
+
+  const negatives = numbersArray.filter((n) => n < 0);
+  if (negatives.length > 0) {
+    throw new Error(`negative numbers not allowed: ${negatives.join(", ")}`);
+  }
   return sumNumbers(numbersArray);
 }
 
