@@ -3,5 +3,6 @@ export function add(numbers: string): number {
     return 0;
   }
 
-  return parseInt(numbers);
+  const numbersArray = numbers.split(",").map(Number);
+  return numbersArray.reduce((acc, curr) => acc + curr, 0);
 }
