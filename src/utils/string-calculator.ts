@@ -1,6 +1,7 @@
-export function add(_numbers: string): number {
-  if (_numbers === "") {
+export function add(numbers: string): number {
+  if (numbers === "") {
     return 0;
   }
-  return 100;
+
+  return parseInt(numbers);
 }
