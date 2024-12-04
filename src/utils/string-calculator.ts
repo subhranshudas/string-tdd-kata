@@ -3,6 +3,10 @@ export function add(numbers: string): number {
     return 0;
   }
 
-  const numbersArray = numbers.split(",").map(Number);
+  // convert to "\n" to ","
+  const convertedNumbers = numbers.replace(/\n/g, ",");
+
+  // split to numbers
+  const numbersArray = convertedNumbers.split(",").map(Number);
   return numbersArray.reduce((acc, curr) => acc + curr, 0);
 }
