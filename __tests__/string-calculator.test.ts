@@ -31,4 +31,25 @@ describe("add", () => {
     expect(add("//#\n1#2#3")).toBe(6);
     expect(add("//@\n2@3@8")).toBe(13);
   });
+
+  describe("negative numbers", () => {
+    it("should throw error for single negative number", () => {
+      expect(() => add("-1")).toThrow("negative numbers not allowed: -1");
+    });
+
+    it("should throw error with all negative numbers in message", () => {
+      expect(() => add("2,-4,3,-5")).toThrow(
+        "negative numbers not allowed: -4, -5"
+      );
+      expect(() => add("-1,-2,-3")).toThrow(
+        "negative numbers not allowed: -1, -2, -3"
+      );
+    });
+
+    it("should throw error with negative numbers when using custom delimiter", () => {
+      expect(() => add("//;\n1;-2;3;-4")).toThrow(
+        "negative numbers not allowed: -2, -4"
+      );
+    });
+  });
 });
